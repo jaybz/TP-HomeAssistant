@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TP_HomeAssistant.Extensions;
@@ -50,7 +51,7 @@ namespace TP_HomeAssistant.Models
             {
                 _allAttributes = new Dictionary<string, dynamic>(value);
 
-                foreach(string key in value.Keys)
+                foreach(string key in value.Keys.ToList())
                 {
                     try
                     {
@@ -120,7 +121,16 @@ namespace TP_HomeAssistant.Models
                             case "rgb_color":
                             case "rgbw_color":
                             case "rgbww_color":
-                                value.Remove(key);
+                                if (value[key] is JArray)
+                                {
+                                    value[key] = ((JArray)value[key]).ToObject<List<dynamic>>().Select(i => (string)i.ToString()).ToList<string>();
+                                }
+                                else
+                                    value.Remove(key); // probably unsupported
+                                break;
+                            case "foreacast": // from weather entity
+                            case "repositories": // from hacs 
+                                value.Remove(key); // no support currently
                                 break;
                         }
                     }

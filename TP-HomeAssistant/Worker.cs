@@ -176,7 +176,17 @@ namespace TP_HomeAssistant
 
                     foreach (var (attribute, value) in state.OtherAttributes.ToList())
                     {
-                        UpdateState($"{statePrefix}.attribute.{attribute}", $"{state.FriendlyName} {attribute}", value.ToString(), force);
+                        if(value is List<string>)
+                        {
+                            int index = 0;
+                            foreach (var item in value)
+                            {
+                                UpdateState($"{statePrefix}.attribute.{attribute}[{index}]", $"{state.FriendlyName} {attribute}[{index}]", item, force);
+                                index++;
+                            }
+                        }
+                        else
+                            UpdateState($"{statePrefix}.attribute.{attribute}", $"{state.FriendlyName} {attribute}", value.ToString(), force);
                     }
                     break;
             }
