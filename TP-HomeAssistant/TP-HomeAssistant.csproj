@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <None Update="entry.tp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 </Project>
