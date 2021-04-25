@@ -34,12 +34,13 @@ Note: If you set a button up to have both On Press and On Hold actions, those ac
 
 ## Credits
 - The integration into Touch Portal uses [TouchPortalAPI](https://github.com/tlewis17/TouchPortalAPI)
+- Home Assistant calls are made via [HADotNet](https://github.com/qJake/HADotNet/).
 - This plugin uses [Json.NET](https://github.com/JamesNK/Newtonsoft.Json) for JSON serialization/deserialization.
 - Thanks to [Touch Portal](https://www.touch-portal.com/), without it, you won't be able to use this plugin.
 - Thanks to [Home Assistant](https://www.home-assistant.io/), because this plugin will not do anything without it.
 
 ## Contributing
-If you wish to contribute, simply fork this repository and submit your changes via pull request to the develop branch. Pull requests to any other branch will be rejected.
+If you wish to contribute, simply fork this repository and submit your changes via pull request targeting the develop branch or a feature branch. Please do not target the release branch in your pull requests.
 
 ### TouchPortalAPI
-I'm currently using my own fork of TouchPortalAPI to allow adding support for API features to this plugin that have not yet been merged back into upstream. Any changes applied to my fork will eventually make it back to the upstream as a pull request and I will not be building any releases of the fork other than as part of my own projects. Instead of using my fork, I recommend posting an issue at [TouchPortalAPI](https://github.com/tlewis17/TouchPortalAPI/issues) if the official release does not yet contain the features/fixes that your own project needs. I will only be entertaining issues posted at my fork's Github page if they involve any plugin(s) that I am using that fork with, including this one.
+I'm currently using my own fork of TouchPortalAPI to allow adding support for API features to this plugin that have not yet been merged back into upstream. Any changes applied to my fork will eventually make it back to the upstream as a pull request and I will not be building any releases of the fork other than as part of my own projects. I will only be entertaining issues and pull requests posted at my fork's Github if they involve any plugin(s) that I am using the fork with, including this one. I make no guarantees, however, that changes made to the upstream repo will make it to my fork.
