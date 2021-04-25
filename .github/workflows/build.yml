@@ -1,0 +1,33 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - '*'
+      - '!release'
+  pull_request:
+    branches:
+      - 'develop'
+      - 'release'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Checkout submodules
+      run: git submodule update --init --recursive
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build TP-HomeAssistant
+      run: dotnet publish --configuration Release --no-restore TP-HomeAssistant/TP-HomeAssistant.csproj -o package/TP-HomeAssistant/
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: build
+        path: package/TP-HomeAssistant

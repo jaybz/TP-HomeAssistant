@@ -1,0 +1,56 @@
+name: Publish
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Checkout submodules
+      run: git submodule update --init --recursive
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build TP-HomeAssistant
+      run: dotnet publish --configuration Release --no-restore TP-HomeAssistant/TP-HomeAssistant.csproj -o package/TP-HomeAssistant/
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: release
+        path: package/TP-HomeAssistant
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Get release info
+      id: get_release
+      uses: bruceadams/get-release@v1.2.2
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+    - name: Get release version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+    - uses: actions/download-artifact@v2
+      with:
+        name: release
+        path: TP-HomeAssistant
+    - name: Package
+      run: zip -v -r TP-HomeAssistant.tpp TP-HomeAssistant
+    - name: Upload Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.get_release.outputs.upload_url }}
+        asset_path: TP-HomeAssistant.tpp
+        asset_name: TP-HomeAssistant-${{ steps.get_version.outputs.VERSION }}.tpp
+        asset_content_type: application/zip
