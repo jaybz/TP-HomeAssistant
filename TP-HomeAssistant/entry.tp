@@ -1,0 +1,155 @@
+{
+  "sdk": 3,
+  "version": 900,
+  "name": "Home Assistant Plugin",
+  "id": "HomeAssistant",
+  "configuration": {
+    "colorLight": "#E34A1F",
+    "colorDark": "#942404"
+  },
+  "settings": [
+    {
+      "name": "Home Assistant URL",
+      "default": "http://homeassistant.local:8123/",
+      "type": "text",
+      "readOnly": false
+    },
+    {
+      "name": "Home Assistant Access Token",
+      "default": "",
+      "type": "text",
+      "isPassword": true,
+      "readOnly": false
+    }
+  ],
+  "plugin_start_cmd": "\"%TP_PLUGIN_FOLDER%TP-HomeAssistant\\TP-HomeAssistant.exe\"",
+  "categories": [
+    {
+      "id": "hassio",
+      "name": "HomeAssistant",
+      "actions": [
+        {
+          "id": "hassio_poweronoff",
+          "prefix": "HomeAssistant",
+          "name": "Set Device Power State",
+          "type": "communicate",
+          "tryInline": true,
+          "hasHoldFunctionality": true,
+          "format": "Set power state for {$hassio_entities_onoffstate$} set to {$hassio_state$}",
+          "data": [
+            {
+              "id": "hassio_entities_onoffstate",
+              "type": "choice",
+              "label": "Entity",
+              "default": "",
+              "valueChoices": []
+            },
+            {
+              "id": "hassio_state",
+              "type": "switch",
+              "label": "Power State",
+              "default": false
+            }
+          ]
+        },
+        {
+          "id": "hassio_powertoggle",
+          "prefix": "HomeAssistant",
+          "name": "Toggle Device Power State",
+          "type": "communicate",
+          "tryInline": true,
+          "hasHoldFunctionality": true,
+          "format": "Toggle power state for {$hassio_entities_togglestate$}",
+          "data": [
+            {
+              "id": "hassio_entities_togglestate",
+              "type": "choice",
+              "label": "Entity",
+              "default": "",
+              "valueChoices": []
+            }
+          ]
+        },
+        {
+          "id": "hassio_scene",
+          "prefix": "HomeAssistant",
+          "name": "Activate Scene",
+          "type": "communicate",
+          "tryInline": true,
+          "format": "Activate {$hassio_scenes$}",
+          "data": [
+            {
+              "id": "hassio_scenes",
+              "type": "choice",
+              "label": "Scene",
+              "default": "",
+              "valueChoices": []
+            }
+          ]
+        },
+        {
+          "id": "hassio_automation",
+          "prefix": "HomeAssistant",
+          "name": "Trigger Automation",
+          "type": "communicate",
+          "tryInline": true,
+          "format": "Trigger {$hassio_automations$}",
+          "data": [
+            {
+              "id": "hassio_automations",
+              "type": "choice",
+              "label": "Automation",
+              "default": "",
+              "valueChoices": []
+            }
+          ]
+        },
+        {
+          "id": "hassio_service",
+          "prefix": "Home Assistant",
+          "name": "Call Home Assistant Service",
+          "type": "communicate",
+          "tryInline": true,
+          "format": "Call Home Assistant Service - Domain: {$hassio_domain$} Service: {$hassio_service$} Data: {$hassio_data$}",
+          "data": [
+            {
+              "id": "hassio_domain",
+              "type": "text",
+              "label": "Domain",
+              "default": ""
+            },
+            {
+              "id": "hassio_service",
+              "type": "text",
+              "label": "Service",
+              "default": ""
+            },
+            {
+              "id": "hassio_data",
+              "type": "text",
+              "label": "Data",
+              "default": ""
+            }
+          ]
+        }
+      ],
+      "events": [],
+      "states": [
+        {
+          "id": "hassio_paired",
+          "type": "choice",
+          "desc": "HomeAssistant Paired",
+          "default": "0",
+          "valueChoices": [ "0", "1" ]
+        },
+        {
+          "id": "hassio_ready",
+          "type": "choice",
+          "desc": "HomeAssistant Ready",
+          "default": "0",
+          "valueChoices": [ "0", "1" ]
+        }
+      ]
+    }
+  ]
+}

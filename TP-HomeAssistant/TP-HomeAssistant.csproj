@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>dotnet-TP_HomeAssistant-467618C0-7FB7-43B3-BBDF-73D9AB9EEC61</UserSecretsId>
+    <RootNamespace>TP_HomeAssistant</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HADotNet.Core" Version="1.5.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TouchPortalAPI\TouchPortalApi\TouchPortalApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="entry.tp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,3 @@
+[submodule "TouchPortalAPI"]
+	path = TouchPortalAPI
+	url = https://github.com/jaybz/TouchPortalAPI

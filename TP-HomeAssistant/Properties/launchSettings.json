@@ -1,0 +1,10 @@
+﻿{
+  "profiles": {
+    "TP_HomeAssistant": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
