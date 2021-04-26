@@ -26,11 +26,11 @@
   "categories": [
     {
       "id": "hassio",
-      "name": "HomeAssistant",
+      "name": "Home Assistant",
       "actions": [
         {
           "id": "hassio_poweronoff",
-          "prefix": "HomeAssistant",
+          "prefix": "Home Assistant",
           "name": "Set Device Power State",
           "type": "communicate",
           "tryInline": true,
@@ -54,8 +54,8 @@
         },
         {
           "id": "hassio_powertoggle",
-          "prefix": "HomeAssistant",
-          "name": "Toggle Device Power State",
+          "prefix": "Home Assistant",
+          "name": "Toggle Device State",
           "type": "communicate",
           "tryInline": true,
           "hasHoldFunctionality": true,
@@ -72,7 +72,7 @@
         },
         {
           "id": "hassio_scene",
-          "prefix": "HomeAssistant",
+          "prefix": "Home Assistant",
           "name": "Activate Scene",
           "type": "communicate",
           "tryInline": true,
@@ -89,7 +89,7 @@
         },
         {
           "id": "hassio_automation",
-          "prefix": "HomeAssistant",
+          "prefix": "Home Assistant",
           "name": "Trigger Automation",
           "type": "communicate",
           "tryInline": true,
@@ -138,14 +138,14 @@
         {
           "id": "hassio_paired",
           "type": "choice",
-          "desc": "HomeAssistant Paired",
+          "desc": "Home Assistant Paired",
           "default": "0",
           "valueChoices": [ "0", "1" ]
         },
         {
           "id": "hassio_ready",
           "type": "choice",
-          "desc": "HomeAssistant Ready",
+          "desc": "Home Assistant Ready",
           "default": "0",
           "valueChoices": [ "0", "1" ]
         }
