@@ -181,12 +181,12 @@ namespace TP_HomeAssistant
                             int index = 0;
                             foreach (var item in value)
                             {
-                                UpdateState($"{statePrefix}.attribute.{attribute}[{index}]", $"{state.FriendlyName} {attribute}[{index}]", item, force);
+                                UpdateState($"{statePrefix}.attribute.{attribute}[{index}]", $"{state.FriendlyName} {attribute}[{index}]", Convert.ToString(item), force);
                                 index++;
                             }
                         }
                         else
-                            UpdateState($"{statePrefix}.attribute.{attribute}", $"{state.FriendlyName} {attribute}", value.ToString(), force);
+                            UpdateState($"{statePrefix}.attribute.{attribute}", $"{state.FriendlyName} {attribute}", Convert.ToString(value), force);
                     }
                     break;
             }
@@ -198,7 +198,7 @@ namespace TP_HomeAssistant
             {
                 if (_dynamicStates.ContainsKey(id))
                 {
-                    if (force || !_dynamicStates[id].Equals(value))
+                    if (force || !_dynamicStates[id].Equals(value ?? ""))
                     {
                         _dynamicStates[id] = value;
                         if (force)
@@ -219,7 +219,7 @@ namespace TP_HomeAssistant
 
         private void HandleAction(string actionId, ActionType actionType, List<ActionData> data)
         {
-            string entityId = "";
+           string entityId = "";
             switch (actionId)
             {
                 case "hassio_poweronoff":
@@ -283,17 +283,41 @@ namespace TP_HomeAssistant
         {
             _messageProcessor.OnConnectEventHandler += () =>
             {
-                _messageProcessor.UpdateState(new StateUpdate() { Id = "hassio_paired", Value = "1" });
+                try
+                {
+                    _messageProcessor.UpdateState(new StateUpdate() { Id = "hassio_paired", Value = "1" });
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e.Message);
+                    _logger.LogError(e.StackTrace);
+                }
             };
 
             _messageProcessor.OnActionEvent += (actionId, dataList) =>
             {
-                HandleAction(actionId, ActionType.Press, dataList);
+                try
+                {
+                    HandleAction(actionId, ActionType.Press, dataList);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e.Message);
+                    _logger.LogError(e.StackTrace);
+                }
             };
 
             _messageProcessor.OnHoldActionEvent += (actionId, held, dataList) =>
             {
-                HandleAction(actionId, held ? ActionType.Hold : ActionType.Release, dataList);
+                try
+                {
+                    HandleAction(actionId, held ? ActionType.Hold : ActionType.Release, dataList);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e.Message);
+                    _logger.LogError(e.StackTrace);
+                }
             };
 
             _messageProcessor.OnListChangeEventHandler += (actionId, listId, instanceId, value) =>
@@ -302,45 +326,69 @@ namespace TP_HomeAssistant
 
             _messageProcessor.OnBroadcastEventHandler += (eventType, pageName) =>
             {
-                switch(eventType)
+                try
                 {
-                    case "pageChange":
-                        Console.WriteLine("HomeAssistant received pageChange broadcast");
-                        ProcessStates(true).Wait();
-                        break;
+                    switch (eventType)
+                    {
+                        case "pageChange":
+                            Console.WriteLine("HomeAssistant received pageChange broadcast");
+                            ProcessStates(true).Wait();
+                            break;
+                    }
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e.Message);
+                    _logger.LogError(e.StackTrace);
                 }
             };
 
             _messageProcessor.OnSettingEventHandler += (settings) =>
             {
-                foreach (var setting in settings)
+                try
                 {
-                    foreach (var (key, value) in setting)
+                    foreach (var setting in settings)
                     {
-                        switch (key)
+                        foreach (var (key, value) in setting)
                         {
-                            case "Home Assistant URL":
-                                _hassioUrl = value;
-                                break;
-                            case "Home Assistant Access Token":
-                                _hassioKey = value;
-                                break;
+                            switch (key)
+                            {
+                                case "Home Assistant URL":
+                                    _hassioUrl = value;
+                                    break;
+                                case "Home Assistant Access Token":
+                                    _hassioKey = value;
+                                    break;
+                            }
                         }
                     }
-                }
 
-                badCredentials = false;
-                loggedIn = false;
-                _messageProcessor.UpdateState(new StateUpdate() { Id = "hassio_ready", Value = "0" });
+                    badCredentials = false;
+                    loggedIn = false;
+                    _messageProcessor.UpdateState(new StateUpdate() { Id = "hassio_ready", Value = "0" });
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e.Message);
+                    _logger.LogError(e.StackTrace);
+                }
             };
 
             _messageProcessor.OnCloseEventHandler += () => {
-                foreach (string state in _dynamicStates.Keys)
+                try
                 {
-                    _messageProcessor.RemoveState(new StateRemove { Id = state });
+                    foreach (string state in _dynamicStates.Keys)
+                    {
+                        _messageProcessor.RemoveState(new StateRemove { Id = state });
+                    }
+                    _dynamicStates.Clear();
+                    stopRequested = true;
                 }
-                _dynamicStates.Clear();
-                stopRequested = true;
+                catch (Exception e)
+                {
+                    _logger.LogError(e.Message);
+                    _logger.LogError(e.StackTrace);
+                }
             };
 
             _messageProcessor.OnExitHandler += () =>
@@ -366,6 +414,11 @@ namespace TP_HomeAssistant
 
                     await Task.Delay(500, stoppingToken);
                 }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                _logger.LogError(e.StackTrace);
             }
             finally
             {
