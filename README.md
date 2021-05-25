@@ -31,7 +31,7 @@ Note: If you set a button up to have both On Press and On Hold actions, those ac
 ## Known issues
 - When an entity id disappears from [Home Assistant](https://www.home-assistant.io/) (either because the entity is no longer present, or if the entity id is changed) this entity (and it's id) will continue to be visible in Touch Portal until the plugin (or Touch Portal itself) is restarted.
 - Plugin states/variables for list [Home Assistant](https://www.home-assistant.io/) attributes are not currently supported. List values might later be supported via drop-down lists for presets and other similar settings. Tuples, however, are now supported.
-- In some menus in Touch Portal, states lose their first underscore. This is a Touch Portal issue and isn't something that can be reasonably dealt with on the plugin.
+- In some menus in Touch Portal, states lose their first underscore. This is a Touch Portal issue and isn't something that can be reasonably dealt with on the plugin. This is also purely cosmetic.
 
 ## Credits
 - The integration into Touch Portal uses [TouchPortalAPI](https://github.com/tlewis17/TouchPortalAPI)
