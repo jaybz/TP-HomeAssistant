@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>dotnet-TP_HomeAssistant-467618C0-7FB7-43B3-BBDF-73D9AB9EEC61</UserSecretsId>
     <RootNamespace>TP_HomeAssistant</RootNamespace>
+    <Version>0.9.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
