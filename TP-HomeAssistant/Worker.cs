@@ -198,7 +198,7 @@ namespace TP_HomeAssistant
             {
                 if (_dynamicStates.ContainsKey(id))
                 {
-                    if (force || !_dynamicStates[id].Equals(value ?? ""))
+                    if (force || (_dynamicStates[id] != null && !_dynamicStates[id].Equals(value ?? "")))
                     {
                         _dynamicStates[id] = value;
                         if (force)
@@ -219,7 +219,7 @@ namespace TP_HomeAssistant
 
         private void HandleAction(string actionId, ActionType actionType, List<ActionData> data)
         {
-           string entityId = "";
+            string entityId = "";
             switch (actionId)
             {
                 case "hassio_poweronoff":
