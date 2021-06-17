@@ -1,6 +1,9 @@
 # TP-HomeAssistant
 This is a [Home Assistant](https://www.home-assistant.io/) plugin for [Touch Portal](https://www.touch-portal.com/). I wrote this plugin as I initially had Tuya devices (via OpenAPI) but am now gradually migrating to a different platform as I've had issues dealing with Tuya's API. Due to the complexity of setting up and getting the necessary keys for Tuya's OpenAPI, I won't be releasing that plugin. Instead, you can set up [Home Assistant](https://www.home-assistant.io/) and configure its Tuya integration or use [IFTTT](https://ifttt.com/home) to control your Tuya devices.
 
+## Important Note
+If you are upgrading from 0.9.4 or earlier to 0.9.5 or later and you may run into issues after the upgrade. If you do, first try deleting the plugin, importing the plugin again, then restart Touch Portal. Your plugin settings should be retained.
+
 ## Device Support
 Most types of devices supported by [Home Assistant](https://www.home-assistant.io/) should be supported by this plugin. That said, I do not have all the different device types available for testing at the moment. Also, support for most attributes, states, and services are very basic at the moment.
 
