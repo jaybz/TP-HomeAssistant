@@ -1,6 +1,6 @@
 {
   "sdk": 3,
-  "version": 904,
+  "version": 905,
   "name": "Home Assistant Plugin",
   "id": "HomeAssistant",
   "configuration": {
@@ -148,6 +148,12 @@
           "desc": "Home Assistant Ready",
           "default": "0",
           "valueChoices": [ "0", "1" ]
+        },
+        {
+          "id": "hassio_error",
+          "type": "text",
+          "desc": "Home Assistant Error",
+          "default": ""
         }
       ]
     }

@@ -25,7 +25,7 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build TP-HomeAssistant
-      run: dotnet publish --configuration Release --no-restore TP-HomeAssistant/TP-HomeAssistant.csproj -o package/TP-HomeAssistant/
+      run: dotnet publish --configuration Release --no-restore TP-HomeAssistant/TP-HomeAssistant.csproj -o package/TP-HomeAssistant/ -r win-x86
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
