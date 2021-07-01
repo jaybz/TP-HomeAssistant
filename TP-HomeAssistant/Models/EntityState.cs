@@ -115,7 +115,6 @@ namespace TP_HomeAssistant.Models
                                 SupportedFeatures = (long)value[key];
                                 value.Remove(key);
                                 break;
-                            // tuples currently unsupported
                             case "hs_color":
                             case "xy_color":
                             case "rgb_color":
@@ -126,9 +125,9 @@ namespace TP_HomeAssistant.Models
                                     value[key] = ((JArray)value[key]).ToObject<List<dynamic>>().Select(i => (string)i.ToString()).ToList<string>();
                                 }
                                 else
-                                    value.Remove(key); // probably unsupported
+                                    value.Remove(key); // not a tuple as expected, probably unsupported
                                 break;
-                            case "foreacast": // from weather entity
+                            //case "forecast": // from weather entity - not supported, but safe to output, TP will receive a JSON string, a bug prevented this from being filtered out
                             case "repositories": // from hacs 
                                 value.Remove(key); // no support currently
                                 break;
@@ -175,7 +174,7 @@ namespace TP_HomeAssistant.Models
         public List<string> SupportedColorModes { get; private set; }
 
         [JsonIgnore]
-        public DateTime LastTriggered { get; private set; }
+        public DateTime? LastTriggered { get; private set; }
 
         [JsonIgnore]
         public string DeviceClass { get; private set; }
