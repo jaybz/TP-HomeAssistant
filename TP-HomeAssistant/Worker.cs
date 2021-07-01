@@ -97,7 +97,7 @@ namespace TP_HomeAssistant
             {
                 if(_currentStates.ContainsKey(state.EntityId))
                 {
-                    if (force || _currentStates[state.EntityId].LastChanged < state.LastChanged)
+                    if (force || _currentStates[state.EntityId].LastUpdated < state.LastUpdated)
                     {
                         _currentStates[state.EntityId] = state;
                         ProcessState(state, force);
@@ -181,12 +181,12 @@ namespace TP_HomeAssistant
                             int index = 0;
                             foreach (var item in value)
                             {
-                                UpdateState($"{statePrefix}.attribute.{attribute}[{index}]", $"{state.FriendlyName} {attribute}[{index}]", Convert.ToString(item), force);
+                                UpdateState($"{statePrefix}.attribute.{attribute}[{index}]", $"{state.FriendlyName} {attribute}[{index}]", Convert.ToString(item ?? ""), force);
                                 index++;
                             }
                         }
                         else
-                            UpdateState($"{statePrefix}.attribute.{attribute}", $"{state.FriendlyName} {attribute}", Convert.ToString(value), force);
+                            UpdateState($"{statePrefix}.attribute.{attribute}", $"{state.FriendlyName} {attribute}", Convert.ToString(value ?? ""), force);
                     }
                     break;
             }
