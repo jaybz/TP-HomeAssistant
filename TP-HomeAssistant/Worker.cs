@@ -58,18 +58,29 @@ namespace TP_HomeAssistant
                 {
                     var result = await ClientFactory.GetClient<ConfigClient>().GetConfiguration();
                 }
-                catch (AggregateException e)
+                catch (Exception e)
                 {
-                    var inner = e.InnerException;
-                    if (inner is HttpResponseException)
+                    HttpResponseException httpException = null;
+                    if (e is AggregateException && e.InnerException is HttpResponseException)
+                        httpException = (HttpResponseException)e.InnerException;
+                    else if (e is HttpResponseException)
+                        httpException = (HttpResponseException)e;
+
+                    if(httpException != null)
                     {
-                        HttpResponseException exception = (HttpResponseException)inner;
-                        if (exception.StatusCode == 401)
+                        switch(httpException.StatusCode)
                         {
-                            badCredentials = true;
-                            return;
+                            case 401:
+                                badCredentials = true;
+                                _logger.LogError($"Can't log in due to authentication error, please check your long-lived access token.");
+                                return;
+                            default:
+                                _logger.LogError($"API Request Error. Code {httpException.StatusCode}.");
+                                break;
                         }
                     }
+
+                    throw;
                 }
 
                 loggedIn = true;
