@@ -58,18 +58,29 @@ namespace TP_HomeAssistant
                 {
                     var result = await ClientFactory.GetClient<ConfigClient>().GetConfiguration();
                 }
-                catch (AggregateException e)
+                catch (Exception e)
                 {
-                    var inner = e.InnerException;
-                    if (inner is HttpResponseException)
+                    HttpResponseException httpException = null;
+                    if (e is AggregateException && e.InnerException is HttpResponseException)
+                        httpException = (HttpResponseException)e.InnerException;
+                    else if (e is HttpResponseException)
+                        httpException = (HttpResponseException)e;
+
+                    if(httpException != null)
                     {
-                        HttpResponseException exception = (HttpResponseException)inner;
-                        if (exception.StatusCode == 401)
+                        switch(httpException.StatusCode)
                         {
-                            badCredentials = true;
-                            return;
+                            case 401:
+                                badCredentials = true;
+                                _logger.LogError($"Can't log in due to authentication error, please check your long-lived access token.");
+                                return;
+                            default:
+                                _logger.LogError($"API Request Error. Code {httpException.StatusCode}.");
+                                break;
                         }
                     }
+
+                    throw;
                 }
 
                 loggedIn = true;
@@ -246,7 +257,18 @@ namespace TP_HomeAssistant
                 }
             }
 
-            if (_currentStates.ContainsKey(entityId))
+            if(actionId.Equals("hassio_service"))
+            {
+                var hassio_service = data.Where(d => d.Id.Equals("hassio_service"))?.First()?.Value;
+                var hassio_domain = data.Where(d => d.Id.Equals("hassio_domain"))?.First()?.Value;
+                var hassio_data = data.Where(d => d.Id.Equals("hassio_data"))?.First()?.Value;
+
+                if (!string.IsNullOrWhiteSpace(hassio_service) && !string.IsNullOrWhiteSpace(hassio_domain))
+                    _hassioServices.CallService(hassio_domain, hassio_service, hassio_data);
+                else if(!string.IsNullOrWhiteSpace(hassio_service))
+                    _hassioServices.CallService(hassio_service, hassio_data);
+            }
+            else if (_currentStates.ContainsKey(entityId))
             {
                 Domain domain = _currentStates[entityId].Domain;
                 switch (actionId)
@@ -260,14 +282,6 @@ namespace TP_HomeAssistant
                         break;
                     case "hassio_powertoggle":
                         _hassioServices.CallService(domain.GetDomainString(), "toggle", new { entity_id = entityId });
-                        break;
-                    case "hassio_service":
-                        var hassio_service = data.Where(d => d.Id.Equals("hassio_service"))?.First()?.Value;
-                        var hassio_domain = data.Where(d => d.Id.Equals("hassio_domain"))?.First()?.Value;
-                        var hassio_data = data.Where(d => d.Id.Equals("hassio_data"))?.First()?.Value;
-
-                        if (!string.IsNullOrWhiteSpace(hassio_service) && !string.IsNullOrWhiteSpace(hassio_domain))
-                            _hassioServices.CallService(hassio_domain, hassio_service, hassio_data);
                         break;
                     case "hassio_scene":
                         _hassioServices.CallService("scene", "turn_on", new { entity_id = entityId });
