@@ -257,7 +257,18 @@ namespace TP_HomeAssistant
                 }
             }
 
-            if (_currentStates.ContainsKey(entityId))
+            if(actionId.Equals("hassio_service"))
+            {
+                var hassio_service = data.Where(d => d.Id.Equals("hassio_service"))?.First()?.Value;
+                var hassio_domain = data.Where(d => d.Id.Equals("hassio_domain"))?.First()?.Value;
+                var hassio_data = data.Where(d => d.Id.Equals("hassio_data"))?.First()?.Value;
+
+                if (!string.IsNullOrWhiteSpace(hassio_service) && !string.IsNullOrWhiteSpace(hassio_domain))
+                    _hassioServices.CallService(hassio_domain, hassio_service, hassio_data);
+                else if(!string.IsNullOrWhiteSpace(hassio_service))
+                    _hassioServices.CallService(hassio_service, hassio_data);
+            }
+            else if (_currentStates.ContainsKey(entityId))
             {
                 Domain domain = _currentStates[entityId].Domain;
                 switch (actionId)
@@ -271,14 +282,6 @@ namespace TP_HomeAssistant
                         break;
                     case "hassio_powertoggle":
                         _hassioServices.CallService(domain.GetDomainString(), "toggle", new { entity_id = entityId });
-                        break;
-                    case "hassio_service":
-                        var hassio_service = data.Where(d => d.Id.Equals("hassio_service"))?.First()?.Value;
-                        var hassio_domain = data.Where(d => d.Id.Equals("hassio_domain"))?.First()?.Value;
-                        var hassio_data = data.Where(d => d.Id.Equals("hassio_data"))?.First()?.Value;
-
-                        if (!string.IsNullOrWhiteSpace(hassio_service) && !string.IsNullOrWhiteSpace(hassio_domain))
-                            _hassioServices.CallService(hassio_domain, hassio_service, hassio_data);
                         break;
                     case "hassio_scene":
                         _hassioServices.CallService("scene", "turn_on", new { entity_id = entityId });
