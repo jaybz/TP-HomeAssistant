@@ -20,7 +20,7 @@ You can find the appropriate location to place these by going to Touch Portal ->
 ## Available actions
 - Set power state - Let's you call the turn_on or turn_off service for a particular [Home Assistant](https://www.home-assistant.io/) entity. Support for other states, if and when implemented later, will be through a different action.
 - Toggle state - Let's you call the toggle service. Note that not all devices that support turn_on and turn_off support toggle and vice versa.
-- Call Home Assistant Service - Other services are supported through this. You should be able to include the Entity ID state for an entity as part of the data parameter.
+- Call Home Assistant Service - Other services are supported through this. You should be able to include the Entity ID state for an entity as part of the data parameter. Note that the Data field needs to be a JSON.
 - Trigger Automation
 - Apply Scene
 
