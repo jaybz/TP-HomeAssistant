@@ -24,7 +24,7 @@ As of version 0.9.8, states are now sorted using the corresponding entity's name
 ## Available actions
 - Set power state - Let's you call the turn_on or turn_off service for a particular [Home Assistant](https://www.home-assistant.io/) entity. Support for other states, if and when implemented later, will be through a different action.
 - Toggle state - Let's you call the toggle service. Note that not all devices that support turn_on and turn_off support toggle and vice versa.
-- Call Home Assistant Service - Other services are supported through this. You should be able to include the Entity ID state for an entity as part of the data parameter. Note that the Data field needs to be a JSON.
+- Call Home Assistant Service - Other services are supported through this. You should be able to include the Entity ID state for an entity as part of the data parameter. Note that the Data field must contain valid JSON.
 - Trigger Automation
 - Apply Scene
 - Rebuild Home Assistant States - This clears all states from the plugin and [Touch Portal](https://www.touch-portal.com/) and then re-creates them. This will let you remove states whose corresponding entities no longer exist in your [Home Assistant](https://www.home-assistant.io/) instance without restarting [Touch Portal](https://www.touch-portal.com/) or the plugin. This will also re-apply sorting of states as a side effect.
