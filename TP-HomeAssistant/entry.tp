@@ -1,6 +1,6 @@
 {
   "sdk": 3,
-  "version": 907,
+  "version": 908,
   "name": "Home Assistant Plugin",
   "id": "HomeAssistant",
   "configuration": {
@@ -19,6 +19,13 @@
       "default": "",
       "type": "text",
       "isPassword": true,
+      "readOnly": false
+    },
+    {
+      "name": "Entity Exclusion Filter (comma separated)",
+      "default": "",
+      "type": "text",
+      "isPassword": false,
       "readOnly": false
     }
   ],
@@ -131,6 +138,13 @@
               "default": ""
             }
           ]
+        },
+        {
+          "id": "hassio_rebuild_states",
+          "prefix": "Home Assistant",
+          "name": "Rebuild Home Assistant States",
+          "type": "communicate",
+          "format": "Rebuild Home Assistant States"
         }
       ],
       "events": [],
