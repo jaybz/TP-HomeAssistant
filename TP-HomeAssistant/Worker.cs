@@ -31,6 +31,9 @@ namespace TP_HomeAssistant
         private bool loggedIn = false;
         private bool badCredentials = false;
         private bool stopRequested = false;
+        private bool rebuildRequested = false;
+        private string _filterSetting = "";
+        private List<string> filters = new List<string>();
 
         private EntityClient _hassioEntities;
         private StatesClient _hassioStates;
@@ -88,6 +91,16 @@ namespace TP_HomeAssistant
             }
         }
 
+        public void ClearStates()
+        {
+            foreach(var id in _dynamicStates.Keys)
+            {
+                _messageProcessor.RemoveState(new StateRemove { Id = id });
+            }
+            _dynamicStates.Clear();
+            _currentStates.Clear();
+        }
+
         public async Task ProcessStates(bool force = false)
         {
             string serializedState = "";
@@ -101,7 +114,14 @@ namespace TP_HomeAssistant
                 return; // not logged in?
             }
             var convertedStates = JsonConvert.DeserializeObject<List<EntityState>>(serializedState);
-            var supportedStates = convertedStates.Where(s => s.Domain != Domain.Unsupported).ToList();
+            var supportedStates = convertedStates.Where(s => s.Domain != Domain.Unsupported && !filters.Any(f => s.EntityId.Contains(f))).OrderBy(s => s.FriendlyName).ToList();
+
+            if(rebuildRequested)
+            {
+                rebuildRequested = false;
+                force = true;
+                ClearStates();
+            }
 
             bool newEntity = false;
             foreach(var state in supportedStates)
@@ -185,7 +205,7 @@ namespace TP_HomeAssistant
                     UpdateState($"{statePrefix}.domain", $"{state.FriendlyName} Domain", state.Domain.GetDomainString(), force);
                     UpdateState($"{statePrefix}.state", $"{state.FriendlyName} State", state.State.ToString(), force);
 
-                    foreach (var (attribute, value) in state.OtherAttributes.ToList())
+                    foreach (var (attribute, value) in state.OtherAttributes.OrderBy(a => a.Key).ToList())
                     {
                         if(value is List<string>)
                         {
@@ -228,6 +248,17 @@ namespace TP_HomeAssistant
             }
         }
 
+        public void UpdateFilters()
+        {
+            if (!string.IsNullOrWhiteSpace(_filterSetting))
+                filters = _filterSetting.Split(",").Select(f => f.Trim()).ToList();
+            else
+                filters.Clear();
+
+            rebuildRequested = true;
+            _ = ProcessStates(true);
+        }
+
         private void HandleAction(string actionId, ActionType actionType, List<ActionData> data)
         {
             string entityId = "";
@@ -245,6 +276,9 @@ namespace TP_HomeAssistant
                 case "hassio_automation":
                     entityId = data.Where(d => d.Id.Equals("hassio_automations"))?.First()?.Value;
                     break;
+                case "hassio_rebuild_states":
+                    entityId = "";
+                    break;
             }
 
             if (!string.IsNullOrWhiteSpace(entityId))
@@ -257,7 +291,7 @@ namespace TP_HomeAssistant
                 }
             }
 
-            if(actionId.Equals("hassio_service"))
+            if (actionId.Equals("hassio_service"))
             {
                 var hassio_service = data.Where(d => d.Id.Equals("hassio_service"))?.First()?.Value;
                 var hassio_domain = data.Where(d => d.Id.Equals("hassio_domain"))?.First()?.Value;
@@ -265,8 +299,13 @@ namespace TP_HomeAssistant
 
                 if (!string.IsNullOrWhiteSpace(hassio_service) && !string.IsNullOrWhiteSpace(hassio_domain))
                     _hassioServices.CallService(hassio_domain, hassio_service, hassio_data);
-                else if(!string.IsNullOrWhiteSpace(hassio_service))
+                else if (!string.IsNullOrWhiteSpace(hassio_service))
                     _hassioServices.CallService(hassio_service, hassio_data);
+            }
+            else if (actionId.Equals("hassio_rebuild_states"))
+            {
+                rebuildRequested = true;
+                _ = ProcessStates(true);
             }
             else if (_currentStates.ContainsKey(entityId))
             {
@@ -368,10 +407,18 @@ namespace TP_HomeAssistant
                             switch (key)
                             {
                                 case "Home Assistant URL":
-                                    _hassioUrl = value;
+                                    _hassioUrl = ((string)value).Trim();
                                     break;
                                 case "Home Assistant Access Token":
-                                    _hassioKey = value;
+                                    _hassioKey = ((string)value).Trim();
+                                    break;
+                                case "Entity Exclusion Filter (comma separated)":
+                                    string newFilter = ((string)value).Trim();
+                                    if(!_filterSetting.Equals(newFilter))
+                                    {
+                                        _filterSetting = newFilter;
+                                        UpdateFilters();
+                                    }
                                     break;
                             }
                         }
@@ -391,11 +438,7 @@ namespace TP_HomeAssistant
             _messageProcessor.OnCloseEventHandler += () => {
                 try
                 {
-                    foreach (string state in _dynamicStates.Keys)
-                    {
-                        _messageProcessor.RemoveState(new StateRemove { Id = state });
-                    }
-                    _dynamicStates.Clear();
+                    ClearStates();
                     stopRequested = true;
                 }
                 catch (Exception e)
