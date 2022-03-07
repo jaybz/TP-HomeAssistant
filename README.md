@@ -14,7 +14,7 @@ This plugin can support various robot vacuums and other devices within the vacuu
 There are two things you need to enter into Touch Portal's plugin settings for [Home Assistant](https://www.home-assistant.io/):
 - Home Assistant URL - This can be your local/private URL or your public URL. eg: http://homeassistant.local:8123/
 - Home Assistant Access Key - You need to create a long-lived access token by logging into your [Home Assistant](https://www.home-assistant.io/) server's web interface and going to your profile (eg: http://homeassistant.local:8123/profile). Scroll down to the Long-Lived Access Tokens section and click on the Create Token button.
-- Entity Exclusion Filter - Comma separated list of values to filter out. Any entities whose Entity ID (including domain) contains one of the values in this list will not have states reported to Touch Portal. Whole domains can be excluded using this setting but keep in mind that domains like sensor, for example, can be part of Entity IDs in different domains as well and will be affected by the sensor filter.
+- Entity Exclusion Filter - Comma separated list of values to filter out. Any entities whose Entity ID (including domain) contains one of the values in this list will not have states reported to Touch Portal. Whole domains can be excluded using this setting but keep in mind that domains like sensor, for example, can be part of Entity IDs in different domains as well. A restart is not needed for the filter setting to take effect, however, if the filter is not being applied, try restarting first.
 
 You can find the appropriate location to place these by going to Touch Portal -> Settings -> Plugins. Then select the [Home Assistant](https://www.home-assistant.io/) Plugin from the drop down list.
 
