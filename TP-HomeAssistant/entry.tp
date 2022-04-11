@@ -1,6 +1,6 @@
 {
   "sdk": 3,
-  "version": 908,
+  "version": 909,
   "name": "Home Assistant Plugin",
   "id": "HomeAssistant",
   "configuration": {
@@ -23,6 +23,13 @@
     },
     {
       "name": "Entity Exclusion Filter (comma separated)",
+      "default": "",
+      "type": "text",
+      "isPassword": false,
+      "readOnly": false
+    },
+    {
+      "name": "Entity Inclusion Filter (comma separated)",
       "default": "",
       "type": "text",
       "isPassword": false,
