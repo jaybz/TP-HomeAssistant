@@ -32,8 +32,10 @@ namespace TP_HomeAssistant
         private bool badCredentials = false;
         private bool stopRequested = false;
         private bool rebuildRequested = false;
-        private string _filterSetting = "";
-        private List<string> filters = new List<string>();
+        private string _exclusionSetting = "";
+        private string _inclusionSetting = "";
+        private List<string> exclusionFilters = new List<string>();
+        private List<string> inclusionFilters = new List<string>();
 
         private EntityClient _hassioEntities;
         private StatesClient _hassioStates;
@@ -114,7 +116,7 @@ namespace TP_HomeAssistant
                 return; // not logged in?
             }
             var convertedStates = JsonConvert.DeserializeObject<List<EntityState>>(serializedState);
-            var supportedStates = convertedStates.Where(s => s.Domain != Domain.Unsupported && !filters.Any(f => s.EntityId.Contains(f))).OrderBy(s => s.FriendlyName).ToList();
+            var supportedStates = convertedStates.Where(s => s.Domain != Domain.Unsupported && (inclusionFilters.Count()==0 || inclusionFilters.Any(i => s.EntityId.Contains(i))) && !exclusionFilters.Any(e => s.EntityId.Contains(e))).OrderBy(s => s.FriendlyName).ToList();
 
             if(rebuildRequested)
             {
@@ -250,10 +252,21 @@ namespace TP_HomeAssistant
 
         public void UpdateFilters()
         {
-            if (!string.IsNullOrWhiteSpace(_filterSetting))
-                filters = _filterSetting.Split(",").Select(f => f.Trim()).ToList();
+            if (!string.IsNullOrWhiteSpace(_exclusionSetting))
+            {
+                exclusionFilters = _exclusionSetting.Split(",").Select(f => f.Trim()).ToList();
+                exclusionFilters.RemoveAll(i => string.IsNullOrWhiteSpace(i));
+            }
             else
-                filters.Clear();
+                exclusionFilters.Clear();
+
+            if (!string.IsNullOrWhiteSpace(_inclusionSetting))
+            {
+                inclusionFilters = _inclusionSetting.Split(",").Select(f => f.Trim()).ToList();
+                inclusionFilters.RemoveAll(i => string.IsNullOrWhiteSpace(i));
+            }
+            else
+                inclusionFilters.Clear();
 
             rebuildRequested = true;
             _ = ProcessStates(true);
@@ -398,6 +411,7 @@ namespace TP_HomeAssistant
 
             _messageProcessor.OnSettingEventHandler += (settings) =>
             {
+                bool filtersUpdated = false;
                 try
                 {
                     foreach (var setting in settings)
@@ -413,17 +427,26 @@ namespace TP_HomeAssistant
                                     _hassioKey = ((string)value).Trim();
                                     break;
                                 case "Entity Exclusion Filter (comma separated)":
-                                    string newFilter = ((string)value).Trim();
-                                    if(!_filterSetting.Equals(newFilter))
+                                    string newExclusionFilter = ((string)value).Trim();
+                                    if (!_exclusionSetting.Equals(newExclusionFilter))
                                     {
-                                        _filterSetting = newFilter;
-                                        UpdateFilters();
+                                        _exclusionSetting = newExclusionFilter;
+                                        filtersUpdated = true;
+                                    }
+                                    break;
+                                case "Entity Inclusion Filter (comma separated)":
+                                    string newInclusionFilter = ((string)value).Trim();
+                                    if (!_inclusionSetting.Equals(newInclusionFilter))
+                                    {
+                                        _inclusionSetting = newInclusionFilter;
+                                        filtersUpdated = true;
                                     }
                                     break;
                             }
                         }
                     }
 
+                    if (filtersUpdated) UpdateFilters();
                     badCredentials = false;
                     loggedIn = false;
                     _messageProcessor.UpdateState(new StateUpdate() { Id = "hassio_ready", Value = "0" });
