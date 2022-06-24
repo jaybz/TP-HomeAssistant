@@ -203,9 +203,9 @@ namespace TP_HomeAssistant
                 default:
                     string statePrefix = $"hassio.{state.EntityId}";
 
-                    UpdateState($"{statePrefix}.entity_id", $"{state.FriendlyName} Entity ID", state.EntityId, force);
-                    UpdateState($"{statePrefix}.domain", $"{state.FriendlyName} Domain", state.Domain.GetDomainString(), force);
-                    UpdateState($"{statePrefix}.state", $"{state.FriendlyName} State", state.State.ToString(), force);
+                    UpdateState($"{statePrefix}.entity_id", "Entity ID", state.EntityId, force, state.FriendlyName);
+                    UpdateState($"{statePrefix}.domain", "Domain", state.Domain.GetDomainString(), force, state.FriendlyName);
+                    UpdateState($"{statePrefix}.state", "State", state.State.ToString(), force, state.FriendlyName);
 
                     foreach (var (attribute, value) in state.OtherAttributes.OrderBy(a => a.Key).ToList())
                     {
@@ -214,18 +214,18 @@ namespace TP_HomeAssistant
                             int index = 0;
                             foreach (var item in value)
                             {
-                                UpdateState($"{statePrefix}.attribute.{attribute}[{index}]", $"{state.FriendlyName} {attribute}[{index}]", Convert.ToString(item ?? ""), force);
+                                UpdateState($"{statePrefix}.attribute.{attribute}[{index}]", $"{attribute}[{index}]", Convert.ToString(item ?? ""), force, state.FriendlyName);
                                 index++;
                             }
                         }
                         else
-                            UpdateState($"{statePrefix}.attribute.{attribute}", $"{state.FriendlyName} {attribute}", Convert.ToString(value ?? ""), force);
+                            UpdateState($"{statePrefix}.attribute.{attribute}", attribute, Convert.ToString(value ?? ""), force, state.FriendlyName);
                     }
                     break;
             }
         }
 
-        public void UpdateState(string id, string name, string value, bool force = false)
+        public void UpdateState(string id, string name, string value, bool force = false, string parentGroup = null)
         {
             if (!stopRequested)
             {
@@ -243,7 +243,7 @@ namespace TP_HomeAssistant
                 {
                     _dynamicStates.Add(id, value);
 
-                    _messageProcessor.CreateState(new StateCreate { Id = id, Desc = $"Home Assistant {name}", DefaultValue = "" });
+                    _messageProcessor.CreateState(new StateCreate { Id = id, Desc = name, DefaultValue = "", ParentGroup = parentGroup });
                     if (!string.IsNullOrWhiteSpace(value))
                         _messageProcessor.UpdateState(new StateUpdate { Id = id, Value = value });
                 }
