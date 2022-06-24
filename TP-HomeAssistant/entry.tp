@@ -1,6 +1,6 @@
 {
-  "sdk": 3,
-  "version": 909,
+  "sdk": 6,
+  "version": 910,
   "name": "Home Assistant Plugin",
   "id": "HomeAssistant",
   "configuration": {
@@ -159,21 +159,21 @@
         {
           "id": "hassio_paired",
           "type": "choice",
-          "desc": "Home Assistant Paired",
+          "desc": "Paired",
           "default": "0",
           "valueChoices": [ "0", "1" ]
         },
         {
           "id": "hassio_ready",
           "type": "choice",
-          "desc": "Home Assistant Ready",
+          "desc": "Ready",
           "default": "0",
           "valueChoices": [ "0", "1" ]
         },
         {
           "id": "hassio_error",
           "type": "text",
-          "desc": "Home Assistant Error",
+          "desc": "Error",
           "default": ""
         }
       ]
