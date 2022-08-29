@@ -243,7 +243,7 @@ namespace TP_HomeAssistant
                 {
                     _dynamicStates.Add(id, value);
 
-                    _messageProcessor.CreateState(new StateCreate { Id = id, Desc = name, DefaultValue = "", ParentGroup = parentGroup });
+                    _messageProcessor.CreateState(new StateCreate { Id = id, Desc = $"{parentGroup} {name}", DefaultValue = "", ParentGroup = parentGroup });
                     if (!string.IsNullOrWhiteSpace(value))
                         _messageProcessor.UpdateState(new StateUpdate { Id = id, Value = value });
                 }
