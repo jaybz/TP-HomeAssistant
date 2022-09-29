@@ -1,6 +1,6 @@
 {
   "sdk": 6,
-  "version": 911,
+  "version": 912,
   "name": "Home Assistant Plugin",
   "id": "HomeAssistant",
   "configuration": {
