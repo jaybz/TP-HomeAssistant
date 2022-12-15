@@ -21,18 +21,28 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Github Workflows", "Github 
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Debug|MacOS 64-bit = Debug|MacOS 64-bit
+		Debug|Windows 32-bit = Debug|Windows 32-bit
+		Release|MacOS 64-bit = Release|MacOS 64-bit
+		Release|Windows 32-bit = Release|Windows 32-bit
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C2DAE672-7BEA-4228-90A1-F7640DA9EBAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C2DAE672-7BEA-4228-90A1-F7640DA9EBAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C2DAE672-7BEA-4228-90A1-F7640DA9EBAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C2DAE672-7BEA-4228-90A1-F7640DA9EBAF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F7A967B7-CEB5-4746-95AA-C95B2AF44AB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F7A967B7-CEB5-4746-95AA-C95B2AF44AB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F7A967B7-CEB5-4746-95AA-C95B2AF44AB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F7A967B7-CEB5-4746-95AA-C95B2AF44AB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2DAE672-7BEA-4228-90A1-F7640DA9EBAF}.Debug|MacOS 64-bit.ActiveCfg = Debug|MacOS 64-bit
+		{C2DAE672-7BEA-4228-90A1-F7640DA9EBAF}.Debug|MacOS 64-bit.Build.0 = Debug|MacOS 64-bit
+		{C2DAE672-7BEA-4228-90A1-F7640DA9EBAF}.Debug|Windows 32-bit.ActiveCfg = Debug|Windows 32-bit
+		{C2DAE672-7BEA-4228-90A1-F7640DA9EBAF}.Debug|Windows 32-bit.Build.0 = Debug|Windows 32-bit
+		{C2DAE672-7BEA-4228-90A1-F7640DA9EBAF}.Release|MacOS 64-bit.ActiveCfg = Release|x64
+		{C2DAE672-7BEA-4228-90A1-F7640DA9EBAF}.Release|MacOS 64-bit.Build.0 = Release|x64
+		{C2DAE672-7BEA-4228-90A1-F7640DA9EBAF}.Release|Windows 32-bit.ActiveCfg = Release|Any CPU
+		{C2DAE672-7BEA-4228-90A1-F7640DA9EBAF}.Release|Windows 32-bit.Build.0 = Release|Any CPU
+		{F7A967B7-CEB5-4746-95AA-C95B2AF44AB7}.Debug|MacOS 64-bit.ActiveCfg = Debug|Any CPU
+		{F7A967B7-CEB5-4746-95AA-C95B2AF44AB7}.Debug|MacOS 64-bit.Build.0 = Debug|Any CPU
+		{F7A967B7-CEB5-4746-95AA-C95B2AF44AB7}.Debug|Windows 32-bit.ActiveCfg = Debug|Any CPU
+		{F7A967B7-CEB5-4746-95AA-C95B2AF44AB7}.Debug|Windows 32-bit.Build.0 = Debug|Any CPU
+		{F7A967B7-CEB5-4746-95AA-C95B2AF44AB7}.Release|MacOS 64-bit.ActiveCfg = Release|x64
+		{F7A967B7-CEB5-4746-95AA-C95B2AF44AB7}.Release|MacOS 64-bit.Build.0 = Release|x64
+		{F7A967B7-CEB5-4746-95AA-C95B2AF44AB7}.Release|Windows 32-bit.ActiveCfg = Release|Any CPU
+		{F7A967B7-CEB5-4746-95AA-C95B2AF44AB7}.Release|Windows 32-bit.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

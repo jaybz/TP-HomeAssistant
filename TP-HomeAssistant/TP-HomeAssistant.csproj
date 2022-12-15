@@ -1,25 +1,40 @@
-<Project Sdk="Microsoft.NET.Sdk.Worker">
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
+    <RuntimeIdentifiers>win-x86;osx-x64</RuntimeIdentifiers>
     <UserSecretsId>dotnet-TP_HomeAssistant-467618C0-7FB7-43B3-BBDF-73D9AB9EEC61</UserSecretsId>
     <RootNamespace>TP_HomeAssistant</RootNamespace>
     <Version>0.9.5</Version>
     <AssemblyVersion>0.9.8.0</AssemblyVersion>
     <FileVersion>0.9.8.0</FileVersion>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <Platforms>Windows 32-bit;MacOS 64-bit</Platforms>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Windows 32-bit'">
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|MacOS 64-bit'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Windows 32-bit'">
     <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|MacOS 64-bit'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HADotNet.Core" Version="1.5.1" />
+    <_WebToolingArtifacts Remove="Properties\PublishProfiles\LocalFolderProfile.pubxml" />
+    <_WebToolingArtifacts Remove="Properties\PublishProfiles\MacFolderProfile.pubxml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HADotNet.Core" Version="1.6.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
   </ItemGroup>
 

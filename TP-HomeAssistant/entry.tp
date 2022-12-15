@@ -1,6 +1,6 @@
 {
   "sdk": 6,
-  "version": 912,
+  "version": 913,
   "name": "Home Assistant Plugin",
   "id": "HomeAssistant",
   "configuration": {
@@ -36,7 +36,8 @@
       "readOnly": false
     }
   ],
-  "plugin_start_cmd": "\"%TP_PLUGIN_FOLDER%TP-HomeAssistant\\TP-HomeAssistant.exe\"",
+  "plugin_start_cmd_windows": "\"%TP_PLUGIN_FOLDER%TP-HomeAssistant\\TP-HomeAssistant.exe\"",
+  "plugin_start_cmd_mac": "/usr/local/share/dotnet/dotnet %TP_PLUGIN_FOLDER%TP-HomeAssistant/TP-HomeAssistant.dll",
   "categories": [
     {
       "id": "hassio",

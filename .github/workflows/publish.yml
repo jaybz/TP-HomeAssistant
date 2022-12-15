@@ -19,13 +19,20 @@ jobs:
         dotnet-version: 3.1.301
     - name: Install dependencies
       run: dotnet restore
-    - name: Build TP-HomeAssistant
-      run: dotnet publish --configuration Release --no-restore TP-HomeAssistant/TP-HomeAssistant.csproj -o package/TP-HomeAssistant/ -r win-x86
-    - name: Upload Artifact
+    - name: Build TP-HomeAssistant Windows x86
+      run: dotnet publish --configuration Release --no-restore TP-HomeAssistant/TP-HomeAssistant.csproj -o package/win-x86/TP-HomeAssistant/ -r win-x86
+    - name: Build TP-HomeAssistant MacOSX x64
+      run: dotnet publish --configuration Release --no-restore TP-HomeAssistant/TP-HomeAssistant.csproj -o package/osx-x64/TP-HomeAssistant/ -r osx-x64
+    - name: Upload Artifact Windows x86
       uses: actions/upload-artifact@v2
       with:
-        name: release
-        path: package/TP-HomeAssistant
+        name: release-win-x86
+        path: package/win-x86/TP-HomeAssistant
+    - name: Upload Artifact MacOSX x64
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-osx-x64
+        path: package/osx-x64/TP-HomeAssistant
 
   publish:
     runs-on: ubuntu-latest
@@ -35,22 +42,40 @@ jobs:
       id: get_release
       uses: bruceadams/get-release@v1.2.2
       env:
-        GITHUB_TOKEN: ${{ github.token }}
-    - name: Get release version
+        GITHUB_TOKEN: ${{ github.token }}dotnet 
+    - name: Get Windows x86 Release
       id: get_version
       run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
     - uses: actions/download-artifact@v2
       with:
-        name: release
-        path: TP-HomeAssistant
-    - name: Package
-      run: zip -v -r TP-HomeAssistant.tpp TP-HomeAssistant
-    - name: Upload Release
+        name: release-win-x86
+        path: win-x86/TP-HomeAssistant
+    - name: Get MacOSX x64 Release
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+    - uses: actions/download-artifact@v2
+      with:
+        name: release-osx-x64
+        path: osx-x64/TP-HomeAssistant
+    - name: Package Windows x86 Release
+      run: zip -v -r TP-HomeAssistant-win-x86.tpp win-x86/TP-HomeAssistant
+    - name: Package MacOSX x64 Release
+      run: zip -v -r TP-HomeAssistant-osx-x64.tpp osx-x64/TP-HomeAssistant
+    - name: Upload Windows x86 Release
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.get_release.outputs.upload_url }}
-        asset_path: TP-HomeAssistant.tpp
-        asset_name: TP-HomeAssistant-${{ steps.get_version.outputs.VERSION }}.tpp
+        asset_path: TP-HomeAssistant-win-x86.tpp
+        asset_name: TP-HomeAssistant-win-x86-${{ steps.get_version.outputs.VERSION }}.tpp
+        asset_content_type: application/zip
+    - name: Upload MacOSX x64 Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.get_release.outputs.upload_url }}
+        asset_path: TP-HomeAssistant-osx-x64.tpp
+        asset_name: TP-HomeAssistant-osx-x64-${{ steps.get_version.outputs.VERSION }}.tpp
         asset_content_type: application/zip
