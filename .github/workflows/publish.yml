@@ -42,7 +42,7 @@ jobs:
       id: get_release
       uses: bruceadams/get-release@v1.2.2
       env:
-        GITHUB_TOKEN: ${{ github.token }}dotnet 
+        GITHUB_TOKEN: ${{ github.token }} 
     - name: Get version info
       id: get_version
       run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
