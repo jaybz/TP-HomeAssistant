@@ -45,7 +45,7 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }} 
     - name: Get version info
       id: get_version
-      run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+      run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
     - name: Get Windows x86 Release
       uses: actions/download-artifact@v2
       with:
@@ -67,7 +67,7 @@ jobs:
       with:
         upload_url: ${{ steps.get_release.outputs.upload_url }}
         asset_path: TP-HomeAssistant-win-x86.tpp
-        asset_name: TP-HomeAssistant-win-x86-${{ steps.get_version.outputs.VERSION }}.tpp
+        asset_name: TP-HomeAssistant-win-x86-${{ env.VERSION }}.tpp
         asset_content_type: application/zip
     - name: Upload MacOSX x64 Release
       uses: actions/upload-release-asset@v1
@@ -76,5 +76,5 @@ jobs:
       with:
         upload_url: ${{ steps.get_release.outputs.upload_url }}
         asset_path: TP-HomeAssistant-osx-x64.tpp
-        asset_name: TP-HomeAssistant-osx-x64-${{ steps.get_version.outputs.VERSION }}.tpp
+        asset_name: TP-HomeAssistant-osx-x64-${{ env.VERSION }}.tpp
         asset_content_type: application/zip
