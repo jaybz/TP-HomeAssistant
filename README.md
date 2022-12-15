@@ -4,6 +4,19 @@ This is a [Home Assistant](https://www.home-assistant.io/) plugin for [Touch Por
 ## Important Note
 If you are upgrading from 0.9.4 or earlier to 0.9.5 or later, you may run into issues after the upgrade. If you do, first try deleting the plugin, importing the plugin again, then restart Touch Portal. That should fix any upgrade related issues. Your plugin settings should also be retained.
 
+## Platform support
+- Windows 10 & 11 - You will need to download and import TP-HomeAssistant-win-x86-<version>.tpp (or TP-HomeAssistant-<version>.tpp for older releases) from the [releases](https://github.com/jaybz/TP-HomeAssistant/releases) page. Note that the plugin is currently built for 32-bit Windows. This is to allow the plugin to support older 32 bit machines and it should not affect functionality in 64-bit machines. I had plans to try getting [Touch Portal](https://www.touch-portal.com/) to run on an old 32-bit machine but keep in mind that [Touch Portal](https://www.touch-portal.com/) itself officially supports only 64-bits. I may decide to build for 64-bit machines only in the future. 
+- Mac OS 10.15 and up - Please read the section below for information on Mac OS support.
+
+## Preliminary Mac OS support
+Before proceeding, please take note that I do not have ready access to a Mac. I have managed to get it running successfully from a single Mac OS device and have started to include Mac OS packages for each release. I will try to resolve any Mac OS specific issues whenever possible, but I cannot guarantee that I will be able to address them properly. This version is also not as thoroughly tested as the Windows version.
+
+### Requirements for Mac OS
+You need to have the .Net Core 3.1 runtime installed which you can download from [this page](https://dotnet.microsoft.com/en-us/download/dotnet/3.1). Make sure you download the macOS x64 installer for the latest ASP.NET Core Runtime version which is [3.1.32](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-3.1.32-macos-x64-installer) at the time this README was last updated. It may be possible to run the plugin using a newer .Net version, however, I have not tested this and I cannot provide support for that at this time.
+
+### Mac OS Installation
+If you have the necessary requirement(s) above, just download and import TP-HomeAssistant-osx-x64-<version>.tpp from the [releases](https://github.com/jaybz/TP-HomeAssistant/releases) page.
+
 ## Device Support
 Most types of devices supported by [Home Assistant](https://www.home-assistant.io/) should be supported by this plugin. That said, I do not have all the different device types available for testing at the moment. Also, support for most attributes, states, and services are very basic at the moment.
 
