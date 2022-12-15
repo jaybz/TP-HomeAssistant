@@ -43,17 +43,16 @@ jobs:
       uses: bruceadams/get-release@v1.2.2
       env:
         GITHUB_TOKEN: ${{ github.token }}dotnet 
-    - name: Get Windows x86 Release
+    - name: Get version info
       id: get_version
       run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
-    - uses: actions/download-artifact@v2
+    - name: Get Windows x86 Release
+      uses: actions/download-artifact@v2
       with:
         name: release-win-x86
         path: win-x86/TP-HomeAssistant
     - name: Get MacOSX x64 Release
-      id: get_version
-      run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
-    - uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v2
       with:
         name: release-osx-x64
         path: osx-x64/TP-HomeAssistant
