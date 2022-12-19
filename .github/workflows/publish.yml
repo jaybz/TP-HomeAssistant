@@ -60,12 +60,12 @@ jobs:
     - name: Package Windows x86 Release
       run: |
         cd win-x86
-        zip -v -r TP-HomeAssistant-win-x86.tpp win-x86/TP-HomeAssistant
+        zip -v -r TP-HomeAssistant-win-x86.tpp TP-HomeAssistant
         cd ..
     - name: Package MacOSX x64 Release
       run: |
         cd osx-x64
-        zip -v -r TP-HomeAssistant-osx-x64.tpp osx-x64/TP-HomeAssistant
+        zip -v -r TP-HomeAssistant-osx-x64.tpp TP-HomeAssistant
         cd ..
     - name: Upload Windows x86 Release
       uses: actions/upload-release-asset@v1
