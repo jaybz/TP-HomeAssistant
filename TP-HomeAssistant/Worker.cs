@@ -126,21 +126,29 @@ namespace TP_HomeAssistant
             }
 
             bool newEntity = false;
-            foreach(var state in supportedStates)
+            foreach (var state in supportedStates)
             {
-                if(_currentStates.ContainsKey(state.EntityId))
+                Monitor.Enter(_currentStates);
+                try
                 {
-                    if (force || _currentStates[state.EntityId].LastUpdated < state.LastUpdated)
+                    if (_currentStates.ContainsKey(state.EntityId))
                     {
-                        _currentStates[state.EntityId] = state;
+                        if (force || _currentStates[state.EntityId].LastUpdated < state.LastUpdated)
+                        {
+                            _currentStates[state.EntityId] = state;
+                            ProcessState(state, force);
+                        }
+                    }
+                    else
+                    {
+                        _currentStates.Add(state.EntityId, state);
                         ProcessState(state, force);
+                        newEntity = true;
                     }
                 }
-                else
+                finally
                 {
-                    _currentStates.Add(state.EntityId, state);
-                    ProcessState(state, force);
-                    newEntity = true;
+                    Monitor.Exit(_currentStates);
                 }
             }
 
