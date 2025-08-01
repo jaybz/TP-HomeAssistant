@@ -25,12 +25,12 @@ jobs:
     - name: Build TP-HomeAssistant MacOSX x64
       run: dotnet publish --configuration Release --no-restore TP-HomeAssistant/TP-HomeAssistant.csproj -o package/osx-x64/TP-HomeAssistant/ -r osx-x64 --self-contained
     - name: Upload Artifact Windows x86
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: release-win-x86
         path: package/win-x86/TP-HomeAssistant
     - name: Upload Artifact MacOSX x64
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: release-osx-x64
         path: package/osx-x64/TP-HomeAssistant
