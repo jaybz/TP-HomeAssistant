@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <RuntimeIdentifiers>win-x86;osx-x64</RuntimeIdentifiers>
     <UserSecretsId>dotnet-TP_HomeAssistant-467618C0-7FB7-43B3-BBDF-73D9AB9EEC61</UserSecretsId>
     <RootNamespace>TP_HomeAssistant</RootNamespace>
