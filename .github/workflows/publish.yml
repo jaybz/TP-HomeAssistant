@@ -48,12 +48,12 @@ jobs:
       id: get_version
       run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
     - name: Get Windows x86 Release
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4
       with:
         name: release-win-x86
         path: win-x86/TP-HomeAssistant
     - name: Get MacOSX x64 Release
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4
       with:
         name: release-osx-x64
         path: osx-x64/TP-HomeAssistant
