@@ -24,6 +24,13 @@ namespace TP_HomeAssistant.Models
         [DomainString("media_player")] // not supporting media players for now
         MediaPlayer,
 
+        // helpers
+        [DomainString("input_boolean")]
+        InputBoolean,
+        [DomainString("input_button")]
+        InputButton,
+        Counter,
+
         // untested: no test devices available
         Vacuum, // domain not advertised in REST API
         Fan,
